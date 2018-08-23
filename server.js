@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC 
+// so that your API is remotely testable by FCC
 var cors = require('cors');
 app.use(cors({optionSuccessStatus: 200}));  // some legacy browsers choke on 204
 
@@ -19,9 +19,27 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
+// your first API endpoint...
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
+});
+
+//date API
+app.get("/api/timestamp/:date_string",function(req, res){
+  var date_string= req.params.date_string;
+  var date="";
+  if(date_string && date_string !=""){
+        date= new Date(date_string);
+        if(date=="Invalid Date"){
+          date= new Date(parseInt(date_string));
+           }
+     }
+  else{
+    date = new Date();
+  }
+  var unix=date.getTime();
+  var utc=date.toUTCString();
+  res.json({unix:unix,utc:utc});
 });
 
 
